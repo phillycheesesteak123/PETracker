@@ -31,10 +31,14 @@ express()
                 'tasks': (tasks) ? tasks.rows : null
             };
 
+            res.render('pages/index', locals);
+
             client.release();
-            res.send("works");
+
         } catch (err) {
+
             console.error(err);
+
             res.send("Error: " + err);
         }
     })
@@ -46,21 +50,54 @@ express()
                 "SELECT c.relname AS table, a.attname AS column, t.typname AS type FROM pg_catalog.pg_class AS c LEFT JOIN pg_catalog.pg_attribute AS a ON c.oid = a.attrelid AND a.attnum > 0 LEFT JOIN pg_catalog.pg_type AS t ON a.atttypid = t.oid WHERE c.relname IN('users', 'observations', 'students', 'schools', 'tasks') ORDER BY c.relname, a.attnum; "
             );
 
-            // const tables = await client.query(
-            //     "CREATE TABLE users (id SERIAL PRIMARY KEY, email TEXT NOT NULL, password TEXT NOT NULL); CREATE TABLE students(id SERIAL PRIMARY KEY, name TEXT NOT NULL, school TEXT NOT NULL, expires DATE NOT NULL); CREATE TABLE schools( id SERIAL PRIMARY KEY, name TEXT NOT NULL, address TEXT NOT NULL ); CREATE TABLE observations( id SERIAL PRIMARY KEY, users_id INT NOT NULL, student_id INT NOT NULL, tasks_id INT NOT NULL, duration INTERVAL NOT NULL ); CREATE TABLE tasks(id SERIAL PRIMARY KEY, name TEXT NOT NULL); SELECT c.relname AS table, a.attname AS column, t.typname AS type FROM pg_catalog.pg_class AS c LEFT JOIN pg_catalog.pg_attribute AS a ON c.oid = a.attrelid AND a.attnum > 0 LEFT JOIN pg_catalog.pg_type AS t ON a.atttypid = t.oid WHERE c.relname IN('users', 'observations', 'students', 'schools', 'tasks') ORDER BY c.relname, a.attnum; "
-            // );
+            const obs = await client.query(
+                "SELECT * FROM observations"
+            );
 
+            const locals = {
+                'tables': (tables) ? tables.rows : null,
+                'obs': (obs) ? obs.rows : null
+            };
 
-const locals = {
-    'tables': (tables) ? tables.rows : null
-};
-
-res.render('pages/db-info', locals);
-client.release();
+            res.render('pages/db-info', locals);
+            client.release();
 
         } catch (err) {
-    console.error(err);
-    res.send("Error: " + err);
-}
+            console.error(err);
+            res.send("Error: " + err);
+        }
     })
-    .listen(PORT, () => console.log('Listening on ${PORT}'));
+    .post("/log", async (req, res) => {
+        try {
+
+            const client = await pool.connect();
+
+            const usersId = req.body.users_id;
+            const studentsId = req.body.student_id;
+            const tasksId = req.body.tasks_id;
+            const duration = req.body.duration;
+
+            const sql = "INSERT INTO observations (users_id, student_id, tasks_id, duration) VALUES(" + usersId + ", " + studentsId + ", " + tasksId + ", " + duration + ") RETURNING id as new_id;";
+
+            const sqlInsert = await client.query(sql);
+
+            console.log("Tracking task ${tasksId}");
+
+            const result = {
+                "response": (sqlInsert) ? (sqlInsert.rows[0]) : null
+            }
+
+            res.set({
+                'Content-Type': 'application/json'
+            });
+
+            res.json({ requestBody: result });
+
+            client.release();
+
+        } catch (err) {
+            console.error(err);
+            res.send("Error: " + err);
+        }
+    })
+    .listen(PORT, () => console.log("Listening on ${PORT}"));
