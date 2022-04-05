@@ -1,0 +1,26 @@
+{
+  "name": "pe-tracker",
+  "version": "1.0.0",
+  "description": "This shows that out integration with Pivital Tracker works.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phillycheesesteak123/PETracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phillycheesesteak123/PETracker/issues"
+  },
+  "homepage": "https://github.com/phillycheesesteak123/PETracker#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "path": "^0.12.7",
+    "pg": "^8.7.3"
+  }
+}
