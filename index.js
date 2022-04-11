@@ -39,7 +39,7 @@ express()
 
             console.error(err);
 
-            res.send("Error: " + err);
+            res.send("From normal Error: " + err);
         }
     })
     .get('/db-info', async (req, res) => {
@@ -64,7 +64,7 @@ express()
 
         } catch (err) {
             console.error(err);
-            res.send("Error: " + err);
+            res.send("From db-info Error: " + err);
         }
     })
     .post("/log", async (req, res) => {
@@ -75,9 +75,12 @@ express()
             const usersId = req.body.users_id;
             const studentsId = req.body.student_id;
             const tasksId = req.body.tasks_id;
+            const taskName = req.body.name;
             const duration = req.body.duration;
 
-            const sql = "INSERT INTO observations (users_id, student_id, tasks_id, duration) VALUES(" + usersId + ", " + studentsId + ", " + tasksId + ", " + duration + ") RETURNING id as new_id;";
+            const sql = "INSERT INTO observations (users_id, student_id, tasks_id, duration, name) VALUES(" + usersId + ", " + studentsId + ", " + tasksId + ", " + duration + 
+            ", " + taskName +
+             ") RETURNING id as new_id;";
 
             const sqlInsert = await client.query(sql);
 
@@ -85,7 +88,7 @@ express()
 
             const result = {
                 "response": (sqlInsert) ? (sqlInsert.rows[0]) : null
-            }
+            };
 
             res.set({
                 'Content-Type': 'application/json'
@@ -97,7 +100,7 @@ express()
 
         } catch (err) {
             console.error(err);
-            res.send("Error: " + err);
+            res.send("From Log Error: " + err);
         }
     })
     .listen(PORT, () => console.log("Listening on ${PORT}"));
