@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>PE Tracker</title>
 </head>
-
 <body>
     <h1>PE Tracker</h1>
     <% tasks.forEach(function(r) {%>
-        <button id="<%= r.id %>" onClick="javascript:logTask('<%= r.id %>')">
-            <%= r.name %>
-        </button>
-    <% }); %>
-
+        <button id="<%= r.id %>"
+            onClick="javascript:logTask('<%= r.id %>')"> <%= r.name %> </button>
+    <% }); %> 
     <script>
         let currentTaskID = null;
-        let currentTaskName = null;
-        let ctr = 0;
-        let clickCtr = 0;
 
-        const logTask = async function (id, name) {
+        const logTask = async function(id) {
             const response = await fetch('/log', {
                 method: 'POST',
                 headers: {
@@ -31,7 +24,6 @@
                     users_id: -1,
                     student_id: -1,
                     tasks_id: id,
-                    name: name,
                     duration: "'+00:00:01'"
                 })
             });
@@ -41,9 +33,7 @@
             console.log(result);
 
             currentTaskId = id;
-            currentTaskName = name;
         }
     </script>
 </body>
-
 </html>
