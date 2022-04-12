@@ -22,31 +22,18 @@ CREATE TABLE observations (
     users_id INT NOT NULL,
     student_id INT NOT NULL,
     tasks_id INT NOT NULL,
+    name TEXT NOT NULL,
     duration INTERVAL NOT NULL
 );
 
 CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL
-<<<<<<< HEAD
-<<<<<<< HEAD
 );
 
 INSERT INTO tasks (name) VALUES
-<<<<<<< HEAD
-<<<<<<< HEAD
     ('Planned Pres.'), ('Response Pres.'), ('Monitoring'), ('Perform. Feedbk.'), 
     ('Motive. Feedbk.'), ('Beg/End Class'), ('Equip. Mgt.'), 
     ('Organization'), ('Behavior Mgt.'), ('Other Tasks');
-=======
+
 );
->>>>>>> parent of 29b1569 ([Finishes #181782739]Validated Technology Stack)
-=======
-    ('Planned Pres.');
->>>>>>> parent of 0001ca0 (test)
-=======
-);
->>>>>>> parent of 29b1569 ([Finishes #181782739]Validated Technology Stack)
-=======
-    ('Planned Pres.');
->>>>>>> parent of 0001ca0 (test)
