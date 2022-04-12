@@ -13,17 +13,13 @@
 
         <% }); %>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     <h1>Observations</h1>
     <ul>
         <% obs.forEach(function(r) {%>
-            <li> <%= r.tasks_id %> for <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %> </li>
+            <li> <%= r.tasks_id %> <%= r.name %> for <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %> </li>
         <% }); %>
-=======
->>>>>>> parent of 29b1569 ([Finishes #181782739]Validated Technology Stack)
-=======
->>>>>>> parent of 29b1569 ([Finishes #181782739]Validated Technology Stack)
+
     </ul>
 </body>
 </html>

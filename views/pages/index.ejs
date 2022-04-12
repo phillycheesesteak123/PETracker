@@ -8,12 +8,12 @@
     <h1>PE Tracker</h1>
     <% tasks.forEach(function(r) {%>
         <button id="<%= r.id %>"
-            onClick="javascript:logTask('<%= r.id %>')"> <%= r.name %> </button>
+            onClick="javascript:logTask('<%= r.id %>', '<%= r.name %>')"> <%= r.name %> </button>
     <% }); %> 
     <script>
         let currentTaskID = null;
 
-        const logTask = async function(id) {
+        const logTask = async function(id, name) {
             const response = await fetch('/log', {
                 method: 'POST',
                 headers: {
@@ -24,6 +24,7 @@
                     users_id: -1,
                     student_id: -1,
                     tasks_id: id,
+                    name: name,
                     duration: "'+00:00:01'"
                 })
             });
