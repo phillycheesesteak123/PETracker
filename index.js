@@ -33,7 +33,7 @@ express()
 
             res.render('pages/index', locals);
             client.release();
-            res.send("works");
+
         } catch (err) {
             console.error(err);
             res.send("Error: " + err);
@@ -80,7 +80,7 @@ express()
 
             const sqlInsert = await client.query(sql);
 
-            console.log("Tracking task ${tasksId}");
+            console.log(`Tracking task ${tasksId}`);
 
             const result = {
                 "response": (sqlInsert) ? (sqlInsert.rows[0]) : null
@@ -98,9 +98,6 @@ express()
             console.error(err);
             res.send("Error: " + err);
         }
-
-        res.render('pages/db-info', locals);
-        client.release();
 
     })
     .listen(PORT, () => console.log(`Listening on ${PORT}`));
