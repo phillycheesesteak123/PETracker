@@ -31,6 +31,7 @@ express()
                 'tasks': (tasks) ? tasks.rows : null
             };
 
+            res.render('pages/index', locals);
             client.release();
             res.send("works");
         } catch (err) {
@@ -75,8 +76,7 @@ express()
             const duration = req.body.duration;
             const taskName = req.body.name;
 
-            const sql = "INSERT INTO observations (users_id, student_id, tasks_id, duration, name) VALUES(" + usersId + ", " + studentsId + ", " + tasksId + ", " +  duration + ", " +  taskName + 
-            ") RETURNING id as new_id;";
+            const sql = `INSERT INTO observations (users_id, student_id, tasks_id, duration, name) VALUES(${usersId}, ${studentsId}, ${tasksId}, ${duration}, ${taskName}) RETURNING id as new_id;`;
 
             const sqlInsert = await client.query(sql);
 
@@ -84,7 +84,7 @@ express()
 
             const result = {
                 "response": (sqlInsert) ? (sqlInsert.rows[0]) : null
-            }
+            };
 
             res.set({
                 'Content-Type': 'application/json'
@@ -103,4 +103,4 @@ express()
         client.release();
 
     })
-    .listen(PORT, () => console.log('Listening on ${PORT}'));
+    .listen(PORT, () => console.log(`Listening on ${PORT}`));
