@@ -1,40 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>PE Tracker</title>
+  <meta charset="UTF-8">
+  <title>PE Tracker</title>
 </head>
+
 <body>
-    <h1>PE Tracker</h1>
-    <% tasks.forEach(function(r) {%>
-        <button id="<%= r.id %>"
-            onClick="javascript:logTask('<%= r.id %>', '<%= r.name %>')"> <%= r.name %> </button>
-    <% }); %> 
-    <script>
+  <h1>PE Tracker</h1>
+  <% tasks.forEach(function(r) {%>
+    <button id="<%= r.id %>" onClick="javascript:test('<%= r.id %>')">
+
+      <%= r.name %>
+    </button>
+    <% }); %>
+
+      <script>
         let currentTaskID = null;
+        let btn = document.querySelectorAll("button");
+        let btnIsPressed = false;
+        let ctr = 0;
+        let seconds = 0;
+        let minutes = 0;
+        let hours = 0;
+        var timerVariable = "";
+        var totalSeconds = 0;
 
-        const logTask = async function(id, name) {
-            const response = await fetch('/log', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    users_id: -1,
-                    student_id: -1,
-                    tasks_id: id,
-                    name: name,
-                    duration: "'+00:00:01'"
-                })
-            });
+        function countUpTimer() {
+          ++totalSeconds;
+          hours = Math.floor(totalSeconds / 3600);
+          minutes = Math.floor((totalSeconds - hours * 3600) / 60);
+          seconds = totalSeconds - (hours * 3600 + minutes * 60);
 
-            const result = await response.json();
+          console.log("minutes: " + minutes + " seconds: " + seconds);
 
-            console.log(result);
-
-            currentTaskId = id;
+          return minutes + ":" + seconds;
         }
-    </script>
+
+
+        btn.forEach(button => {
+          button.addEventListener('click', (e) => {
+
+            if (!btnIsPressed) {
+              button.style.backgroundColor = "red";
+              timerVariable = setInterval(countUpTimer, 1000);
+              btnIsPressed = true;
+              return;
+            }
+
+            if (btnIsPressed) {
+              button.style.backgroundColor = "green";
+              clearInterval(timerVariable);
+
+              totalSeconds = 0;
+              setInterval(function () {
+                button.style.backgroundColor = "";
+              }, 100);
+
+              btnIsPressed = false;
+              return;
+            }
+          })
+        })
+
+        function formatTime() {
+          var formatedSeconds = seconds;
+          var formatedMinutes = minutes;
+
+          if (seconds < 10) {
+            formatedSeconds = "0" + seconds;
+          }
+
+          if (minutes < 10) {
+            formatedMinutes = "0" + minutes;
+          }
+
+          return "'" + formatedMinutes + ":" + formatedSeconds + "'";
+
+        }
+
+
+        function test(id) {
+          newId = id;
+
+          if (btnIsPressed) {
+            logTask(newId);
+
+          }
+
+        }
+
+        
+        // const logTask = async function (id) {
+        async function logTask(id) {
+
+          const response = await fetch('/log', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              users_id: -1,
+              student_id: -1,
+              tasks_id: id,
+              // duration: "\"+0" + minutes + ":0" + seconds + "\""
+              // duration: "'+00:01'"
+              duration: formatTime()
+
+            })
+          });
+
+          const result = await response.json();
+
+          console.log(result);
+
+          currentTaskId = id;
+        }
+
+
+      </script>
 </body>
+
 </html>

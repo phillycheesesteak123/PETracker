@@ -16,10 +16,61 @@
 
     <h1>Observations</h1>
     <ul>
+
         <% obs.forEach(function(r) {%>
-            <li> <%= r.tasks_id %> <%= r.name %> for <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %> </li>
+
+
+            <li onLoad="javascript:logTask('<%= r.id %>')"> 
+
+                <% if (r.tasks_id == 1) {%>
+                    <span>Planned Pres.</span>
+                <% } %>
+                <% if (r.tasks_id == 2) {%>
+                    <span>Response Pres.</span>
+                <% } %>
+                <% if (r.tasks_id == 3) {%>
+                    <span>Monitoring</span>
+                <% } %>
+                <% if (r.tasks_id == 4) {%>
+                    <span>Perform. Feedbk.</span>
+                <% } %>
+                <% if (r.tasks_id == 5) {%>
+                    <span>Motive. Feedbk.</span>
+                <% } %>
+                <% if (r.tasks_id == 6) {%>
+                    <span>Beg/End Class</span>
+                <% } %>
+                <% if (r.tasks_id == 7) {%>
+                    <span>Equip. Mgt.</span>
+                <% } %>
+                <% if (r.tasks_id == 8) {%>
+                    <span>Organization</span>
+                <% } %>
+                <% if (r.tasks_id == 9) {%>
+                    <span>Behavior Mgt.</span>
+                <% } %>
+                <% if (r.tasks_id == 10) {%>
+                    <span>Other Tasks</span>
+                <% } %>
+
+                : <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %>
+            </li>
+
         <% }); %>
 
     </ul>
+
+    <script>
+        const logTask = async function (id) {
+            let idSelected = document.querySelector("ul li");
+            let name = document.querySelector("#name");
+
+            
+
+        }
+        
+      
+    </script>
+
 </body>
 </html>

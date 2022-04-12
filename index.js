@@ -52,9 +52,14 @@ express()
                 "SELECT * FROM observations"
             );
 
+            const tasks = await client.query(
+                "SELECT * FROM tasks ORDER BY id ASC"
+            );
+
             const locals = {
                 'tables': (tables) ? tables.rows : null,
-                'obs': (obs) ? obs.rows : null
+                'obs': (obs) ? obs.rows : null,
+                'tasks': (tasks) ? tasks.rows : null
             };
 
             res.render('pages/db-info', locals);
@@ -74,16 +79,15 @@ express()
             const studentsId = req.body.student_id;
             const tasksId = req.body.tasks_id;
             const duration = req.body.duration;
-            const taskName = req.body.name;
+            // const taskName = req.body.name;
 
-            const sql = `INSERT INTO observations (users_id, student_id, tasks_id, duration, name) VALUES(${usersId}, ${studentsId}, ${tasksId}, ${duration}, ${taskName}) RETURNING id as new_id;`;
+            const sql = `INSERT INTO observations (users_id, student_id, tasks_id, duration) VALUES(${usersId}, ${studentsId}, ${tasksId},${duration}) RETURNING id as new_id;`;
 
             const sqlInsert = await client.query(sql);
 
-            console.log(`Tracking task ${tasksId}`);
-
             const result = {
-                "response": (sqlInsert) ? (sqlInsert.rows[0]) : null
+                "response": (sqlInsert) ? (sqlInsert.rows[0]) : null,
+
             };
 
             res.set({

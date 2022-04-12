@@ -35,3 +35,13 @@ INSERT INTO tasks (name) VALUES
     ('Planned Pres.'), ('Response Pres.'), ('Monitoring'), ('Perform. Feedbk.'), 
     ('Motive. Feedbk.'), ('Beg/End Class'), ('Equip. Mgt.'), 
     ('Organization'), ('Behavior Mgt.'), ('Other Tasks');
+
+INSERT INTO tasks (name) VALUES ('Planned Pres.'), ('Response Pres.'), ('Monitoring'), ('Perform. Feedbk.'), ('Motive. Feedbk.'), ('Beg/End Class'), ('Equip. Mgt.'), ('Organization'), ('Behavior Mgt.'), ('Other Tasks');
+
+CREATE TABLE observations (
+    id SERIAL PRIMARY KEY,
+    users_id INT NOT NULL,
+    student_id INT NOT NULL,
+    tasks_id INT NOT NULL,
+    duration INTERVAL NOT NULL
+);
