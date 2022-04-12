@@ -20,7 +20,7 @@
         <% obs.forEach(function(r) {%>
 
 
-            <li onLoad="javascript:logTask('<%= r.id %>')"> 
+            <li> 
 
                 <% if (r.tasks_id == 1) {%>
                     <span>Planned Pres.</span>
@@ -53,24 +53,12 @@
                     <span>Other Tasks</span>
                 <% } %>
 
-                : <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %>
+                : <%= r.duration.hours || "00" %>:<%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %>
             </li>
 
         <% }); %>
 
     </ul>
-
-    <script>
-        const logTask = async function (id) {
-            let idSelected = document.querySelector("ul li");
-            let name = document.querySelector("#name");
-
-            
-
-        }
-        
-      
-    </script>
 
 </body>
 </html>

@@ -32,9 +32,7 @@
           minutes = Math.floor((totalSeconds - hours * 3600) / 60);
           seconds = totalSeconds - (hours * 3600 + minutes * 60);
 
-          console.log("minutes: " + minutes + " seconds: " + seconds);
-
-
+          console.log("After: " + hours + ":" + minutes + ":" + seconds);
         }
 
 
@@ -64,19 +62,7 @@
         })
 
         function formatTime() {
-          var formatedSeconds = seconds;
-          var formatedMinutes = minutes;
-
-          if (seconds < 10) {
-            formatedSeconds = "0" + seconds;
-          }
-
-          if (minutes < 10) {
-            formatedMinutes = "0" + minutes;
-          }
-
-          return "'" + formatedMinutes + ":" + formatedSeconds + "'";
-
+          return "'+" + hours + ":" + minutes + ":" + seconds + "'";
         }
 
 
